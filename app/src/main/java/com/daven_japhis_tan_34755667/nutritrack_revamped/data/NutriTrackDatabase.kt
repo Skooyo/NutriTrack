@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 // TODO: add entities
-@Database(entities = [], version = 1, exportSchema = false)
+@Database(entities = [Patient::class], version = 1, exportSchema = false)
 abstract class NutriTrackDatabase: RoomDatabase() {
 
     //TODO: make a DAO for the entities in NutriTrack
