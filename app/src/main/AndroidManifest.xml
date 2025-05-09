@@ -13,6 +13,11 @@
         android:theme="@style/Theme.Nutritrack_Revamped"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.activities.RegisterScreen"
+            android:exported="false"
+            android:label="@string/title_activity_register_screen"
+            android:theme="@style/Theme.Nutritrack_Revamped" />
+        <activity
             android:name=".presentation.activities.LoginScreen"
             android:exported="false"
             android:label="@string/title_activity_login_screen"

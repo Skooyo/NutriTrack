@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
@@ -18,16 +19,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.daven_japhis_tan_34755667.nutritrack_revamped.presentation.components.MaskedInputField
 import com.daven_japhis_tan_34755667.nutritrack_revamped.presentation.components.RoundedButton
-import com.daven_japhis_tan_34755667.nutritrack_revamped.presentation.viewmodels.LoginViewModel
+import com.daven_japhis_tan_34755667.nutritrack_revamped.presentation.viewmodels.RegisterViewModel
 import com.daven_japhis_tan_34755667.nutritrack_revamped.ui.theme.Nutritrack_RevampedTheme
 
-class LoginScreen : ComponentActivity() {
-    private val viewModel by viewModels<LoginViewModel>()
+class RegisterScreen : ComponentActivity() {
+    private val viewModel by viewModels<RegisterViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +37,7 @@ class LoginScreen : ComponentActivity() {
         setContent {
             Nutritrack_RevampedTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    LoginScreen(modifier = Modifier.padding(innerPadding), viewModel)
+                    RegisterScreen(modifier = Modifier.padding(innerPadding), viewModel)
                 }
             }
         }
@@ -43,16 +45,19 @@ class LoginScreen : ComponentActivity() {
 }
 
 @Composable
-fun LoginScreen(
+fun RegisterScreen(
     modifier: Modifier = Modifier,
-    viewModel: LoginViewModel
+    viewModel: RegisterViewModel
 ) {
     val context = LocalContext.current
 
     val userId = viewModel.userId;
+    val phoneNumber = viewModel.phoneNumber;
+    val phoneNumberVisibility = viewModel.phoneNumberVisibility;
     val password = viewModel.password;
-    val isLoading = viewModel.isLoading;
     val passwordVisible = viewModel.passwordVisible;
+    val confirmPassword = viewModel.confirmPassword;
+    val confirmPasswordVisible = viewModel.confirmPasswordVisible;
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -65,7 +70,7 @@ fun LoginScreen(
             verticalArrangement = Arrangement.Center,
         ) {
             Text(
-                text = "Login",
+                text = "Register",
                 fontSize = 48.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -116,6 +121,29 @@ fun LoginScreen(
                 horizontalArrangement = Arrangement.Start
             ) {
                 Text(
+                    text = "Phone Number",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Left
+                )
+            }
+
+            MaskedInputField(
+                textInput = phoneNumber,
+                onTextChange = { viewModel.updatePhoneNumber(it) },
+                visibility = phoneNumberVisibility,
+                toggleVisibility = { viewModel.togglePhoneNumberVisibility() },
+                label = "Enter your phone number",
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Text(
                     text = "Password",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
@@ -132,19 +160,35 @@ fun LoginScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-            Text(
-                text = "This application is only for pre-registered users, please enter your ID and password or Register to" +
-                        "claim your account on your first visit.",
-                textAlign = TextAlign.Center
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Text(
+                    text = "Confirm Password",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Left
+                )
+            }
+
+            MaskedInputField(
+                textInput = confirmPassword,
+                onTextChange = { viewModel.updateConfirmPassword(it) },
+                visibility = confirmPasswordVisible,
+                toggleVisibility = { viewModel.toggleConfirmVisibility() },
+                label = "Confirm your password",
+                modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            RoundedButton(
-                text = "Login",
-                onClick = {}
+            Text(
+                text = "This application is only for pre-registered users, please enter your ID, phone number," +
+                        " and password to claim your account.",
+                textAlign = TextAlign.Center
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -152,9 +196,19 @@ fun LoginScreen(
             RoundedButton(
                 text = "Register",
                 onClick = {
-                    context.startActivity(Intent(context, RegisterScreen::class.java))
                 }
             )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            RoundedButton(
+                text = "Login",
+                onClick = {
+                    context.startActivity(Intent(context, LoginScreen::class.java));
+                }
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
