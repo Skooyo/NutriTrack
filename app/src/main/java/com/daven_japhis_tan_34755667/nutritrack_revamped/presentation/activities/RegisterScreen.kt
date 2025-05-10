@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -51,32 +52,30 @@ fun RegisterScreen(
 ) {
     val context = LocalContext.current
 
-    val userId = viewModel.userId;
-    val phoneNumber = viewModel.phoneNumber;
-    val phoneNumberVisibility = viewModel.phoneNumberVisibility;
-    val password = viewModel.password;
-    val passwordVisible = viewModel.passwordVisible;
-    val confirmPassword = viewModel.confirmPassword;
-    val confirmPasswordVisible = viewModel.confirmPasswordVisible;
+    val userId = viewModel.userId
+    val phoneNumber = viewModel.phoneNumber
+    val phoneNumberVisibility = viewModel.phoneNumberVisibility
+    val password = viewModel.password
+    val passwordVisible = viewModel.passwordVisible
+    val confirmPassword = viewModel.confirmPassword
+    val confirmPasswordVisible = viewModel.confirmPasswordVisible
 
-    Surface(
-        modifier = Modifier.fillMaxSize(),
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-        ) {
+        item {
             Text(
                 text = "Register",
                 fontSize = 48.sp,
                 fontWeight = FontWeight.Bold
             )
+        }
 
-            Spacer(modifier = Modifier.height(24.dp))
-
+        item {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start
@@ -88,9 +87,9 @@ fun RegisterScreen(
                     textAlign = TextAlign.Left
                 )
             }
+        }
 
-            Spacer(modifier = Modifier.height(8.dp))
-
+        item {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -113,12 +112,13 @@ fun RegisterScreen(
                     )
                 }
             }
+        }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(
+        item {
+            Column(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
                 Text(
                     text = "Phone Number",
@@ -126,22 +126,23 @@ fun RegisterScreen(
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Left
                 )
+
+                MaskedInputField(
+                    textInput = phoneNumber,
+                    onTextChange = { viewModel.updatePhoneNumber(it) },
+                    visibility = phoneNumberVisibility,
+                    toggleVisibility = { viewModel.togglePhoneNumberVisibility() },
+                    label = "Enter your phone number",
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
+        }
 
-            MaskedInputField(
-                textInput = phoneNumber,
-                onTextChange = { viewModel.updatePhoneNumber(it) },
-                visibility = phoneNumberVisibility,
-                toggleVisibility = { viewModel.togglePhoneNumberVisibility() },
-                label = "Enter your phone number",
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(
+        item {
+            Column(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
                 Text(
                     text = "Password",
@@ -149,22 +150,23 @@ fun RegisterScreen(
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Left
                 )
+
+                MaskedInputField(
+                    textInput = password,
+                    onTextChange = { viewModel.updatePassword(it) },
+                    visibility = passwordVisible,
+                    toggleVisibility = { viewModel.toggleVisibility() },
+                    label = "Enter your password",
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
+        }
 
-            MaskedInputField(
-                textInput = password,
-                onTextChange = { viewModel.updatePassword(it) },
-                visibility = passwordVisible,
-                toggleVisibility = { viewModel.toggleVisibility() },
-                label = "Enter your password",
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(
+        item {
+            Column(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
                 Text(
                     text = "Confirm Password",
@@ -172,43 +174,41 @@ fun RegisterScreen(
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Left
                 )
+
+                MaskedInputField(
+                    textInput = confirmPassword,
+                    onTextChange = { viewModel.updateConfirmPassword(it) },
+                    visibility = confirmPasswordVisible,
+                    toggleVisibility = { viewModel.toggleConfirmVisibility() },
+                    label = "Confirm your password",
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
+        }
 
-            MaskedInputField(
-                textInput = confirmPassword,
-                onTextChange = { viewModel.updateConfirmPassword(it) },
-                visibility = confirmPasswordVisible,
-                toggleVisibility = { viewModel.toggleConfirmVisibility() },
-                label = "Confirm your password",
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
+        item {
             Text(
                 text = "This application is only for pre-registered users, please enter your ID, phone number," +
                         " and password to claim your account.",
                 textAlign = TextAlign.Center
             )
+        }
 
-            Spacer(modifier = Modifier.height(24.dp))
-
+        item {
             RoundedButton(
                 text = "Register",
                 onClick = {
                 }
             )
+        }
 
-            Spacer(modifier = Modifier.height(24.dp))
-
+        item {
             RoundedButton(
                 text = "Login",
                 onClick = {
-                    context.startActivity(Intent(context, LoginScreen::class.java));
+                    context.startActivity(Intent(context, LoginScreen::class.java))
                 }
             )
-
-            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
